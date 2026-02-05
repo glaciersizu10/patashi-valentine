@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For You 💖</title>
+<style>
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(to bottom, #fff1cc, #ffe6f0);
+  text-align: center;
+  overflow: hidden;
+}
+
+.container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+h1 { color: #ff4d6d; }
+p { color: #555; }
+
+.pani {
+  font-size: 45px;
+  margin: 10px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.pani:hover { transform: scale(1.2); }
+
+button {
+  padding: 14px 28px;
+  border: none;
+  border-radius: 25px;
+  font-size: 1rem;
+  margin-top: 20px;
+  cursor: pointer;
+  background: #ff4d6d;
+  color: white;
+}
+
+/* Hearts */
+.heart {
+  position: fixed;
+  bottom: -10px;
+  font-size: 18px;
+  animation: float 6s linear infinite;
+}
+@keyframes float {
+  to { transform: translateY(-100vh); opacity: 0; }
+}
+
+/* No button escape */
+#no { position: absolute; }
+</style>
+</head>
+
+<body>
+
+<div class="container" id="content">
+  <h1>Special Pani Puri Stall 🫧</h1>
+  <p>Tap the pani puri to fill it with love 💗</p>
+
+  <div id="panis">
+    <span class="pani" onclick="fill(this)">🟤</span>
+    <span class="pani" onclick="fill(this)">🟤</span>
+    <span class="pani" onclick="fill(this)">🟤</span>
+    <span class="pani" onclick="fill(this)">🟤</span>
+    <span class="pani" onclick="fill(this)">🟤</span>
+  </div>
+
+  <p id="count">Love filled: 0/5</p>
+</div>
+
+<audio id="bgm" loop>
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+let filled = 0;
+
+function fill(el) {
+  if (el.innerHTML === "🟤") {
+    el.innerHTML = "💖";
+    filled++;
+    document.getElementById("count").innerText = `Love filled: ${filled}/5`;
+  }
+  if (filled === 5) {
+    setTimeout(nextStep, 800);
+  }
+}
+
+// Floating hearts
+setInterval(() => {
+  const h = document.createElement("div");
+  h.className = "heart";
+  h.innerHTML = "💗";
+  h.style.left = Math.random() * 100 + "vw";
+  document.body.appendChild(h);
+  setTimeout(() => h.remove(), 6000);
+}, 500);
+
+// Step 2
+function nextStep() {
+  document.getElementById("content").innerHTML = `
+    <h1>Perfect 😌💞</h1>
+    <p>
+      You filled all my favorites…<br>
+      just like you filled my heart.
+    </p>
+    <button onclick="next()">Continue 🥺</button>
+  `;
+}
+
+// Step 3
+function next() {
+  document.getElementById("content").innerHTML = `
+    <h1>Connecting our hearts… 💞</h1>
+    <p>One last thing before we continue</p>
+    <button onclick="final()">Okay 😳</button>
+  `;
+}
+
+// Final Valentine
+function final() {
+  document.getElementById("bgm").play();
+  document.getElementById("content").innerHTML = `
+    <h1>Will you be my Valentine? 💖</h1>
+    <button onclick="yes()">Yes 🥰</button>
+    <button id="no">No 😜</button>
+  `;
+
+  const noBtn = document.getElementById("no");
+  noBtn.addEventListener("mouseover", () => {
+    noBtn.style.left = Math.random() * 80 + "%";
+    noBtn.style.top = Math.random() * 80 + "%";
+  });
+}
+
+// Yes → main page
+function yes() {
+  document.body.innerHTML = `
+    <div class="container">
+      <h1>You said YES 🥹❤️</h1>
+      <p>
+        Distance couldn’t stop me from doing this for you.
+        From pani puri cravings to quiet moments,
+        you’re my favorite part of every day. 💕
+      </p>
+
+      <video controls width="300" style="border-radius:15px;">
+        <source src="video1.mp4" type="video/mp4">
+      </video>
+
+      <video controls width="300" style="border-radius:15px;">
+        <source src="video2.mp4" type="video/mp4">
+      </video>
+    </div>
+  `;
+}
+</script>
+
+</body>
+</html>
