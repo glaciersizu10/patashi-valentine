@@ -1,182 +1,151 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>For You 💖</title>
-
 <style>
-body{
- margin:0;
- font-family:'Poppins',sans-serif;
- background:linear-gradient(to bottom,#fff1cc,#ffe6f0);
- text-align:center;
- overflow-x:hidden;
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(to bottom, #fff1cc, #ffe6f0);
+  text-align: center;
 }
-
-.container{
- height:100vh;
- display:flex;
- flex-direction:column;
- justify-content:center;
- align-items:center;
- padding:20px;
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
 }
-
-.pani{font-size:45px;margin:10px;cursor:pointer;transition:0.2s}
-.pani:hover{transform:scale(1.2)}
-
-button{
- padding:14px 28px;
- border:none;
- border-radius:25px;
- font-size:1rem;
- margin-top:20px;
- background:#ff4d6d;
- color:white;
- cursor:pointer;
+h1 { color: #ff4d6d; }
+p { color: #555; max-width: 600px; }
+.pani {
+  font-size: 50px;
+  margin: 10px;
+  cursor: pointer;
+  transition: transform 0.2s;
+  z-index: 2;
 }
-
-#no{position:absolute}
-
-.heart{
- position:fixed;
- bottom:-10px;
- font-size:18px;
- animation:float 6s linear infinite;
+.pani:hover { transform: scale(1.2); }
+button {
+  padding: 14px 28px;
+  border: none;
+  border-radius: 25px;
+  font-size: 1rem;
+  margin-top: 20px;
+  cursor: pointer;
+  background: #ff4d6d;
+  color: white;
 }
-@keyframes float{to{transform:translateY(-100vh);opacity:0}}
-
-.story{
- max-width:700px;
- margin:auto;
- padding:80px 20px;
- line-height:1.9;
- color:#444;
- font-size:1.15rem;
+.heart {
+  position: fixed;
+  bottom: -10px;
+  font-size: 18px;
+  animation: float 6s linear infinite;
+  pointer-events: none;
 }
-
-.video{margin-top:120px}
-video{width:90%;max-width:400px;border-radius:16px;margin-top:20px}
+@keyframes float { to { transform: translateY(-100vh); opacity: 0; } }
+#no { position: absolute; }
+#text { font-size: 18px; line-height: 1.7; padding: 20px; white-space: pre-wrap; }
+.video-wrap { margin-top: 40px; }
 </style>
-
 </head>
-
 <body>
-
 <div class="container" id="content">
-<h1>Special Patashi Stall 🤍</h1>
-<p>Tap the patashi and fill it with love 💕</p>
-
-<div>
-<span class="pani" onclick="fill(this)">🟤</span>
-<span class="pani" onclick="fill(this)">🟤</span>
-<span class="pani" onclick="fill(this)">🟤</span>
-<span class="pani" onclick="fill(this)">🟤</span>
-<span class="pani" onclick="fill(this)">🟤</span>
+  <h1>Special Pani Puri Stall 🫧</h1>
+  <p>Tap the pani puri to fill it with love 💗</p>
+  <div id="panis">
+    <span class="pani">🟤</span>
+    <span class="pani">🟤</span>
+    <span class="pani">🟤</span>
+    <span class="pani">🟤</span>
+    <span class="pani">🟤</span>
+  </div>
+  <p id="count">Love filled: 0/5</p>
 </div>
-
-<p id="count">Love filled: 0/5</p>
-</div>
-
 <audio id="bgm" loop>
-<source src="music.mp3" type="audio/mpeg">
+  <source src="music.mp3" type="audio/mpeg">
 </audio>
-
 <script>
-let filled=0;
+let filled = 0;
 
-function fill(el){
- if(el.innerHTML==="🟤"){
-  el.innerHTML="💖";
-  filled++;
-  document.getElementById("count").innerText=`Love filled: ${filled}/5`;
- }
- if(filled===5)setTimeout(nextStep,800);
-}
+document.querySelectorAll('.pani').forEach(el=>{
+  el.addEventListener('click',()=>{
+    if(el.textContent==='🟤'){
+      el.textContent='💖';
+      filled++;
+      document.getElementById('count').innerText=`Love filled: ${filled}/5`;
+    }
+    if(filled===5){ setTimeout(nextStep,800); }
+  });
+});
 
 setInterval(()=>{
- let h=document.createElement("div");
- h.className="heart";
- h.innerHTML="💗";
- h.style.left=Math.random()*100+"vw";
- document.body.appendChild(h);
- setTimeout(()=>h.remove(),6000);
+  const h=document.createElement('div');
+  h.className='heart';
+  h.innerHTML='💗';
+  h.style.left=Math.random()*100+'vw';
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),6000);
 },500);
 
 function nextStep(){
- document.getElementById("content").innerHTML=`
- <h1>Perfect 🤍</h1>
- <p>You filled all my favorite patashi…<br>just like you filled my heart 💗</p>
- <button onclick="next()">Continue 💕</button>`;
+  document.getElementById('content').innerHTML=`
+    <h1>Perfect 😌💞</h1>
+    <p>You filled all my favorites… just like you filled my heart.</p>
+    <button onclick="next()">Continue 🥺</button>`;
 }
 
 function next(){
- document.getElementById("content").innerHTML=`
- <h1>Will you be my Valentine? 💖</h1>
- <button onclick="yes()">Yes 🥰</button>
- <button id="no">No 😜</button>`;
+  document.getElementById('content').innerHTML=`
+    <h1>Connecting our hearts… 💞</h1>
+    <p>One last thing before we continue</p>
+    <button onclick="finalPage()">Okay 😳</button>`;
+}
 
- let n=document.getElementById("no");
- n.addEventListener("mouseover",()=>{
-  n.style.left=Math.random()*80+"%";
-  n.style.top=Math.random()*80+"%";
- });
+function finalPage(){
+  document.getElementById('content').innerHTML=`
+    <h1>Will you be my Valentine? 💖</h1>
+    <button onclick="yes()">Yes 🥰</button>
+    <button id="no">No 😜</button>`;
+  const noBtn=document.getElementById('no');
+  noBtn.addEventListener('mouseover',()=>{
+    noBtn.style.left=Math.random()*80+'%';
+    noBtn.style.top=Math.random()*80+'%';
+  });
 }
 
 function yes(){
- document.getElementById("bgm").play();
+  document.getElementById('bgm').play();
+  document.body.innerHTML=`
+  <div class='container'>
+    <h1>For You 🤍</h1>
+    <div id='text'></div>
+    <div class='video-wrap'>
+      <video controls width='300' style='border-radius:15px;'>
+        <source src='video1.mp4' type='video/mp4'>
+      </video>
+      <br><br>
+      <video controls width='300' style='border-radius:15px;'>
+        <source src='video2.mp4' type='video/mp4'>
+      </video>
+    </div>
+  </div>`;
 
- document.body.innerHTML=`
- <h1 style="margin-top:60px;color:#ff4d88">You said yes 🤍</h1>
+const message = `Inever expected that one person could slowly become part of my everyday life. At first it was just small conversations, random moments, simple check-ins. But somewhere between those normal talks, you quietly became my habit. You entered my routine without noise. Now mornings feel incomplete if I don’t think about you, and nights feel empty if I don’t tell you about my day. Even from miles away, you give a strange kind of comfort. Not loud, not dramatic just peaceful. Like knowing someone exists who understands your silence too. You know what’s funny? You probably never noticed when it happened, but you became my safe place. The person I want to tell things first. The one whose mood changes mine. The one whose presence makes ordinary days softer. Just like your favorite patashi simple, but somehow impossible to forget. I don’t promise perfect days, I don’t promise we won’t fight, and I don’t promise life will always be easy. But I promise effort. I promise honesty. And I promise that what I feel for you is real and calm, not temporary. So in this tiny corner of the internet, in my own little way… I don’t know at which moment you became this important to me, but now every plan I imagine somehow has you standing beside me. I don’t want to lose you not because I am afraid of being alone, but because life feels more real, more warm, and more meaningful when you are part of it. I know things haven’t always been perfect, and maybe I couldn’t express myself in the right way every time, but my intention has always been pure. I want to make everything better, step by step, with patience and understanding. Not just promises in words, but actions that you can feel and trust. I need you in my future in the small normal days and in the big special moments. I imagine simple things: laughing without reason, sharing silence without awkwardness, supporting each other when the world feels heavy, and celebrating every tiny victory together. I want us to grow, not against each other but with each other. I want a life that feels peaceful, sweet, and safe the kind of bond that doesn’t fade with time but becomes stronger because of it. One day I want people to look at us and admire not perfection, but the way we chose each other again and again even after difficulties. A story where love isn’t loud drama, but calm loyalty. Where happiness is built slowly, honestly, and stays. I’m here, willing to try, willing to learn, willing to fight for us because what we can build together is something I truly believe in. I just want to say, I’m really happy it’s you. 🤍`;
 
- <div class="story">
- <p id="text"></p>
- </div>
-
- <div class="video">
- <h2>Our moments 💗</h2>
- <video controls><source src="video1.mp4"></video>
- <video controls><source src="video2.mp4"></video>
- </div>
- `;
-
- const message=`I never expected that one person could slowly become part of my everyday life.
-At first it was just small conversations, random moments, simple check-ins.
-But somewhere between those normal talks, you quietly became my habit.
-
-You entered my routine without noise.
-Now mornings feel incomplete if I don’t think about you,
-and nights feel empty if I don’t tell you about my day.
-
-Even from miles away, you give a strange kind of comfort.
-Not loud, not dramatic — just peaceful.
-Like knowing someone exists who understands your silence too.
-
-You probably never noticed when it happened,
-but you became my safe place.
-
-I don’t want to lose you — because life feels warmer with you in it.
-I want to make things better, slowly and honestly.
-I need you in my future, in normal days and special moments.
-I imagine a life peaceful, sweet and safe together.
-
-One day I want people to admire not perfection,
-but how we always chose each other again and again.
-
-I’m really happy it’s you. 🤍`;
-
- let i=0;
- function type(){
-  if(i<message.length){
-   document.getElementById("text").innerHTML+=message.charAt(i);
+let i=0;
+function type(){
+ if(i<message.length){
+   document.getElementById('text').innerHTML+=message.charAt(i);
    i++;
    setTimeout(type,30);
-  }
  }
- type();
+}
+type();
 }
 </script>
-
 </body>
 </html>
