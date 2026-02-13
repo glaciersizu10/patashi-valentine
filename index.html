@@ -10,35 +10,21 @@ body{margin:0;font-family:Poppins,system-ui;background:linear-gradient(to bottom
 h1{color:#ff4d6d}
 p{color:#555;max-width:650px}
 button{padding:14px 28px;border:none;border-radius:25px;font-size:1rem;margin-top:20px;cursor:pointer;background:#ff4d6d;color:#fff;box-shadow:0 10px 25px rgba(0,0,0,.15)}
-
-/* envelope */
 .envelope{width:220px;height:150px;background:#fff;border-radius:10px;position:relative;cursor:pointer;box-shadow:0 20px 40px rgba(0,0,0,.2);animation:floaty 3s ease-in-out infinite;transition:transform .6s ease}
 .envelope.open{transform:scale(1.05)}
 .envelope.open:before{animation:openFlap .9s forwards}
 @keyframes openFlap{0%{transform:rotateX(0deg)}100%{transform:rotateX(180deg)}}
 .envelope:before{content:"";position:absolute;top:0;left:0;right:0;height:75px;background:#ffd6e7;clip-path:polygon(0 0,50% 100%,100% 0)}
 @keyframes floaty{50%{transform:translateY(-10px)}}
-
-/* patashi */
 .pani{font-size:50px;margin:10px;cursor:pointer;transition:.2s}
 .pani:hover{transform:scale(1.25) rotate(6deg)}
-
-/* hearts */
 .heart{position:fixed;bottom:-10px;font-size:18px;animation:float 6s linear infinite;pointer-events:none}
 @keyframes float{to{transform:translateY(-100vh);opacity:0}}
-
-/* special beat words */
-.beat{display:inline-block;animation:beat 1s infinite;color:#ff4d6d;font-weight:600}
-@keyframes beat{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
-
-#no{position:absolute}
 #text{font-size:18px;line-height:1.7;padding:20px;white-space:pre-wrap;max-width:700px}
 .video-wrap{margin-top:40px;opacity:0;transform:translateY(40px);transition:1s}
 .video-wrap.show{opacity:1;transform:translateY(0)}
 .scroll-note{margin-top:20px;font-style:italic;color:#ff4d6d;opacity:0;transition:1s}
 .scroll-note.show{opacity:1}
-.sparkle{position:fixed;font-size:12px;animation:spark 2s linear forwards}
-@keyframes spark{to{transform:translateY(-80px);opacity:0}}
 </style>
 </head>
 <body>
@@ -51,113 +37,21 @@ button{padding:14px 28px;border:none;border-radius:25px;font-size:1rem;margin-to
   <source src="music.mp3" type="audio/mpeg">
 </audio>
 
-
 <script>
-
-
-
-function hearts(){const icons=['💗','🌸','🎀','💖','🫶'];setInterval(()=>{const h=document.createElement('div');h.className='heart';h.innerHTML=icons[Math.floor(Math.random()*icons.length)];h.style.left=Math.random()*100+'vw';h.style.fontSize=(14+Math.random()*16)+'px';document.body.appendChild(h);setTimeout(()=>h.remove(),6000)},450)}
-hearts();
-
-function burstHearts(){for(let i=0;i<25;i++){setTimeout(()=>{const h=document.createElement('div');h.className='heart';h.innerHTML='💖';h.style.left=40+Math.random()*20+'vw';h.style.fontSize=(18+Math.random()*22)+'px';document.body.appendChild(h);setTimeout(()=>h.remove(),4000)},i*80)}}
-
 function openEnvelope(el){el.classList.add('open');setTimeout(start,900)}
 
-function start(){document.getElementById('content').innerHTML=`
-<img src="bouquet.png" style="width:220px;margin-bottom:15px;filter:drop-shadow(0 10px 20px rgba(0,0,0,.2));">
-<h1>Special Patashi Stall 🫧</h1>
-<p>Tap the patashi to fill it with love 💗</p>
-<div id='panis'>
-<span class='pani'>🟤</span><span class='pani'>🟤</span><span class='pani'>🟤</span><span class='pani'>🟤</span><span class='pani'>🟤</span>
-</div><p id='count'>Love filled: 0/5</p>`;
-let filled=0;document.querySelectorAll('.pani').forEach(el=>{el.onclick=()=>{if(el.textContent==='🟤'){el.textContent='💖';filled++;document.getElementById('count').innerText=`Love filled: ${filled}/5`;spark(el);}if(filled===5)setTimeout(step2,800)}})}
-
-function spark(el){for(let i=0;i<6;i++){const s=document.createElement('div');s.className='sparkle';s.innerHTML='✨';s.style.left=el.getBoundingClientRect().left+Math.random()*40+'px';s.style.top=el.getBoundingClientRect().top+'px';document.body.appendChild(s);setTimeout(()=>s.remove(),2000)}}
+function start(){document.getElementById('content').innerHTML=`<h1>Special Patashi Stall 🫧</h1><p>Tap the patashi to fill it with love 💗</p><div id='panis'><span class='pani'>🟤</span><span class='pani'>🟤</span><span class='pani'>🟤</span><span class='pani'>🟤</span><span class='pani'>🟤</span></div><p id='count'>Love filled: 0/5</p>`;let filled=0;document.querySelectorAll('.pani').forEach(el=>{el.onclick=()=>{if(el.textContent==='🟤'){el.textContent='💖';filled++;document.getElementById('count').innerText=`Love filled: ${filled}/5`;}if(filled===5)setTimeout(step2,800)}})}
 
 function step2(){document.getElementById('content').innerHTML=`<h1>Perfect 😌💞</h1><p>You filled all my favorites… just like you filled my heart.</p><button onclick='step3()'>Continue 🥺</button>`}
-function step3(){document.getElementById('content').innerHTML=`<h1>Will you be my Valentine? 💖</h1><button onclick='yes()'>Yes 🥰</button><button id='no'>No 😜</button>`;const n=document.getElementById('no');n.onmouseover=()=>{n.style.left=Math.random()*80+'%';n.style.top=Math.random()*80+'%'}}
+function step3(){document.getElementById('content').innerHTML=`<h1>Will you be my Valentine? 💖</h1><button onclick='yes()'>Yes 🥰</button>`}
 
-function yes(){
-burstHearts();
+function stopMusic(){const bg=document.getElementById('bgm');bg.pause();bg.currentTime=0}
 
-const bg=document.getElementById('bgm');
+function yes(){const bg=document.getElementById('bgm');bg.volume=0.4;bg.currentTime=0;bg.play().catch(()=>{});setTimeout(stopMusic,30000);document.getElementById('content').innerHTML=`<div class='container'><h1>For You 🤍</h1><div id='text'></div><div class='scroll-note' id='note'>Watch this till the end… it means something.</div><div class='video-wrap' id='videos'><iframe width='320' height='570' style='border-radius:18px;box-shadow:0 20px 40px rgba(0,0,0,.25)' src='https://drive.google.com/file/d/1rE0od6WWPF4kiq461rhACoYEJRX4QXCJ/preview' allow='autoplay' allowfullscreen></iframe><br><br><button id='watchBtn' onclick="openFeedback()" style='display:none'>I watched it 💌</button></div></div>`;let message=`I never expected that one person could slowly become part of my everyday life... I’m really happy it’s you. 🤍`;let i=0;function type(){if(i<message.length){document.getElementById('text').innerHTML+=message.charAt(i);i++;setTimeout(type,25)}else{document.getElementById('note').classList.add('show');setTimeout(()=>{document.getElementById('videos').classList.add('show');setTimeout(()=>{document.getElementById('watchBtn').style.display='inline-block';},20000);},800)}}type();}
 
-/* reset audio first */
-bg.pause();
-bg.currentTime = 0;
-bg.volume = 0.4;
+function openFeedback(){stopMusic();document.getElementById('content').innerHTML=`<div class='container'><h1>Before you go… 💌</h1><p>Write what you feel about me</p><textarea id='msg' style='width:90%;max-width:500px;height:150px;border-radius:15px;padding:15px;border:none;box-shadow:0 10px 25px rgba(0,0,0,.2)'></textarea><br><button onclick='sendWhatsApp()'>Send to me 🤍</button></div>`}
 
-/* play after user click (important for browsers) */
-bg.play().catch(()=>{});
-
-/* AUTO STOP AFTER 30s */
-setTimeout(()=>{
-  let fade = setInterval(()=>{
-    if(bg.volume > 0.02){
-      bg.volume -= 0.02;
-    }else{
-      clearInterval(fade);
-      bg.pause();
-      bg.currentTime = 0;
-    }
-  },120);
-},30000);
-
-
-
-document.getElementById('content').innerHTML=`
-<div class='container'>
-<h1>For You 🤍</h1>
-<div id='text'></div>
-<div class='scroll-note' id='note'>Watch this till the end… it means something.</div>
-<div class='video-wrap' id='videos'>
-<iframe width="320" height="570" style="border-radius:18px;box-shadow:0 20px 40px rgba(0,0,0,.25)" src="https://drive.google.com/file/d/1rE0od6WWPF4kiq461rhACoYEJRX4QXCJ/preview" allow="autoplay" allowfullscreen></iframe>
-<br><br>
-<button id='watchBtn' onclick="openFeedback()" style='display:none'>I watched it 💌</button>
-</div>
-</div>`;
-
-let message=`I never expected that one person could slowly become part of my everyday life. At first it was just small conversations, random moments, simple check-ins. But somewhere between those normal talks, you quietly became my habit. You entered my routine without noise. Now mornings feel incomplete if I don’t think about you, and nights feel empty if I don’t tell you about my day. Even from miles away, you give a strange kind of comfort. Not loud, not dramatic just peaceful. Like knowing someone exists who understands your silence too. You know what’s funny? You probably never noticed when it happened, but you became my safe place. The person I want to tell things first. The one whose mood changes mine. The one whose presence makes ordinary days softer. Just like your favorite patashi simple, but somehow impossible to forget. I don’t promise perfect days, I don’t promise we won’t fight, and I don’t promise life will always be easy. But I promise effort. I promise honesty. And I promise that what I feel for you is real and calm, not temporary. So in this tiny corner of the internet, in my own little way… I don’t know at which moment you became this important to me, but now every plan I imagine somehow has you standing beside me. I don’t want to lose you not because I am afraid of being alone, but because life feels more real, more warm, and more meaningful when you are part of it. I know things haven’t always been perfect, and maybe I couldn’t express myself in the right way every time, but my intention has always been pure. I want to make everything better, step by step, with patience and understanding. Not just promises in words, but actions that you can feel and trust. I need you in my future in the small normal days and in the big special moments. I imagine simple things: laughing without reason, sharing silence without awkwardness, supporting each other when the world feels heavy, and celebrating every tiny victory together. I want us to grow, not against each other but with each other. I want a life that feels peaceful, sweet, and safe the kind of bond that doesn’t fade with time but becomes stronger because of it. One day I want people to look at us and admire not perfection, but the way we chose each other again and again even after difficulties. A story where love isn’t loud drama, but calm loyalty. Where happiness is built slowly, honestly, and stays. I’m here, willing to try, willing to learn, willing to fight for us because what we can build together is something I truly believe in. I just want to say, I’m really happy it’s you. 🤍`;
-let i=0;function type(){if(i<message.length){document.getElementById('text').innerHTML+=message.charAt(i);i++;setTimeout(type,25)}else{document.getElementById('note').classList.add('show');setTimeout(()=>{document.getElementById('videos').classList.add('show');setTimeout(()=>{document.getElementById('watchBtn').style.display='inline-block';},20000);},800)}}type();}
-
-function showFeedback()
-function openFeedback(){
-  const bg=document.getElementById('bgm');
-
-  if(!bg){ 
-    showFeedback();
-    return;
-  }
-
-  let fade=setInterval(()=>{
-    if(bg.volume>0.02){
-      bg.volume-=0.02;
-    }else{
-      clearInterval(fade);
-      bg.pause();
-      bg.currentTime=0;
-      showFeedback(); 
-    }
-  },80);
-}
-{
-document.getElementById('content').innerHTML=`
-<div class='container'>
-<h1>Before you go… 💌</h1>
-<p>Write what you feel about me</p>
-
-<textarea id='msg'
-style='width:90%;max-width:500px;height:150px;border-radius:15px;padding:15px;border:none;box-shadow:0 10px 25px rgba(0,0,0,.2)'></textarea>
-<br>
-
-<button onclick='sendWhatsApp()'>Send to me 🤍</button>
-<p id='sent' style='display:none;color:#ff4d6d;margin-top:15px'>I received it 🥹</p>
-
-</div>`;
-}
-
-
-function sendWhatsApp(){const text=document.getElementById('msg').value;if(!text){alert('Write something first ❤️');return;}const url=`https://wa.me/917528091604?text=${encodeURIComponent("She wrote about you 💌:\n\n"+text)}`;window.open(url,'_blank');document.getElementById('sent').style.display='block';setTimeout(()=>{document.getElementById('content').innerHTML=`<div class='container'><h1>Thank you for reading 🤍</h1><p>No matter distance… I will always choose you.</p><h2>Happy Valentine’s Day 💖</h2></div>`},1500)}
+function sendWhatsApp(){const text=document.getElementById('msg').value;if(!text){alert('Write something first ❤️');return;}window.open(`https://wa.me/917528091604?text=${encodeURIComponent("She wrote about you 💌:\n\n"+text)}`,'_blank');document.getElementById('content').innerHTML=`<div class='container'><h1>Thank you for reading 🤍</h1><h2>Happy Valentine’s Day 💖</h2></div>`}
 </script>
 </body>
 </html>
