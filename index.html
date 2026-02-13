@@ -53,14 +53,17 @@ button{padding:14px 28px;border:none;border-radius:25px;font-size:1rem;margin-to
 
 <script>
 
-function stopMusic(){
-  const bg = document.getElementById('bgm');
+function killMusic(){
+  const bg = document.getElementById("bgm");
   if(!bg) return;
 
-  bg.pause();
-  bg.currentTime = 0;
-  bg.src = bg.src;
+  bg.pause();          
+  bg.currentTime = 0;  
+  bg.removeAttribute("loop"); 
+  bg.src = "";         
+  bg.load();           
 }
+
 
 function hearts(){const icons=['💗','🌸','🎀','💖','🫶'];setInterval(()=>{const h=document.createElement('div');h.className='heart';h.innerHTML=icons[Math.floor(Math.random()*icons.length)];h.style.left=Math.random()*100+'vw';h.style.fontSize=(14+Math.random()*16)+'px';document.body.appendChild(h);setTimeout(()=>h.remove(),6000)},450)}
 hearts();
@@ -89,26 +92,18 @@ const bg=document.getElementById('bgm');
 bg.volume=0;
 bg.play();
 
-let v=0;
-const fade=setInterval(()=>{
-  v+=0.02;
-  bg.volume=v;
-  if(v>=0.4) clearInterval(fade);
-},120);
-
-/* AUTO STOP AFTER 30 SECONDS */
+/* STOP MUSIC AFTER 30 SECONDS */
 setTimeout(()=>{
-  let vol = bg.volume;
-  const fadeOut = setInterval(()=>{
-    vol -= 0.03;
-    bg.volume = vol;
-
-    if(vol <= 0){
-      clearInterval(fadeOut);
-      stopMusic();  
+  let fade = setInterval(()=>{
+    if(bg.volume > 0.05){
+      bg.volume -= 0.05;   // fade
+    }else{
+      clearInterval(fade);
+      killMusic();         // FULL STOP
     }
-  },80);
+  },150);
 },30000);
+
 
 
 document.getElementById('content').innerHTML=`
@@ -127,7 +122,8 @@ let message=`I never expected that one person could slowly become part of my eve
 let i=0;function type(){if(i<message.length){document.getElementById('text').innerHTML+=message.charAt(i);i++;setTimeout(type,25)}else{document.getElementById('note').classList.add('show');setTimeout(()=>{document.getElementById('videos').classList.add('show');setTimeout(()=>{document.getElementById('watchBtn').style.display='inline-block';},20000);},800)}}type();}
 
 function openFeedback(){
-  stopMusic();
+killMusic();
+
 
   document.getElementById('content').innerHTML=`
   <div class='container'>
