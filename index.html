@@ -76,7 +76,29 @@ function step3(){document.getElementById('content').innerHTML=`<h1>Will you be m
 function yes(){
 burstHearts();
 const bg=document.getElementById('bgm');
-bg.volume=0;bg.play();let v=0;const fade=setInterval(()=>{v+=0.02;bg.volume=v;if(v>=0.4)clearInterval(fade);},120);
+bg.volume=0;
+bg.play();
+
+let v=0;
+const fade=setInterval(()=>{
+  v+=0.02;
+  bg.volume=v;
+  if(v>=0.4) clearInterval(fade);
+},120);
+
+/* AUTO STOP AFTER 30 SECONDS */
+setTimeout(()=>{
+  let vol = bg.volume;
+  const fadeOut = setInterval(()=>{
+    vol -= 0.03;
+    bg.volume = vol;
+    if(vol <= 0){
+      bg.pause();
+      bg.currentTime = 0;
+      clearInterval(fadeOut);
+    }
+  },80);
+},30000);
 
 document.getElementById('content').innerHTML=`
 <div class='container'>
@@ -90,7 +112,7 @@ document.getElementById('content').innerHTML=`
 </div>
 </div>`;
 
-let message=`I never expected that one person could slowly become part of my everyday life... I <span class='beat'>don’t want to lose you</span> and I truly believe we can build a life that feels peaceful, sweet and ours forever. I’m really happy it’s you. 🤍`;
+let message=`I never expected that one person could slowly become part of my everyday life. At first it was just small conversations, random moments, simple check-ins. But somewhere between those normal talks, you quietly became my habit. You entered my routine without noise. Now mornings feel incomplete if I don’t think about you, and nights feel empty if I don’t tell you about my day. Even from miles away, you give a strange kind of comfort. Not loud, not dramatic just peaceful. Like knowing someone exists who understands your silence too. You know what’s funny? You probably never noticed when it happened, but you became my safe place. The person I want to tell things first. The one whose mood changes mine. The one whose presence makes ordinary days softer. Just like your favorite patashi simple, but somehow impossible to forget. I don’t promise perfect days, I don’t promise we won’t fight, and I don’t promise life will always be easy. But I promise effort. I promise honesty. And I promise that what I feel for you is real and calm, not temporary. So in this tiny corner of the internet, in my own little way… I don’t know at which moment you became this important to me, but now every plan I imagine somehow has you standing beside me. I don’t want to lose you not because I am afraid of being alone, but because life feels more real, more warm, and more meaningful when you are part of it. I know things haven’t always been perfect, and maybe I couldn’t express myself in the right way every time, but my intention has always been pure. I want to make everything better, step by step, with patience and understanding. Not just promises in words, but actions that you can feel and trust. I need you in my future in the small normal days and in the big special moments. I imagine simple things: laughing without reason, sharing silence without awkwardness, supporting each other when the world feels heavy, and celebrating every tiny victory together. I want us to grow, not against each other but with each other. I want a life that feels peaceful, sweet, and safe the kind of bond that doesn’t fade with time but becomes stronger because of it. One day I want people to look at us and admire not perfection, but the way we chose each other again and again even after difficulties. A story where love isn’t loud drama, but calm loyalty. Where happiness is built slowly, honestly, and stays. I’m here, willing to try, willing to learn, willing to fight for us because what we can build together is something I truly believe in. I just want to say, I’m really happy it’s you. 🤍`;
 let i=0;function type(){if(i<message.length){document.getElementById('text').innerHTML+=message.charAt(i);i++;setTimeout(type,25)}else{document.getElementById('note').classList.add('show');setTimeout(()=>{document.getElementById('videos').classList.add('show');setTimeout(()=>{document.getElementById('watchBtn').style.display='inline-block';},20000);},800)}}type();}
 
 function openFeedback(){const bg=document.getElementById('bgm');let v=bg.volume;const fade=setInterval(()=>{v-=0.03;bg.volume=v;if(v<=0){bg.pause();clearInterval(fade)}},80);
