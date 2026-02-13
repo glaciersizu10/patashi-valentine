@@ -47,22 +47,13 @@ button{padding:14px 28px;border:none;border-radius:25px;font-size:1rem;margin-to
   <p style="margin-top:20px">I made something for you… open slowly 💌</p>
 </div>
 
-<audio id="bgm" loop>
+<audio id="bgm" preload="auto">
   <source src="music.mp3" type="audio/mpeg">
 </audio>
 
+
 <script>
 
-function killMusic(){
-  const bg = document.getElementById("bgm");
-  if(!bg) return;
-
-  bg.pause();          
-  bg.currentTime = 0;  
-  bg.removeAttribute("loop"); 
-  bg.src = "";         
-  bg.load();           
-}
 
 
 function hearts(){const icons=['💗','🌸','🎀','💖','🫶'];setInterval(()=>{const h=document.createElement('div');h.className='heart';h.innerHTML=icons[Math.floor(Math.random()*icons.length)];h.style.left=Math.random()*100+'vw';h.style.fontSize=(14+Math.random()*16)+'px';document.body.appendChild(h);setTimeout(()=>h.remove(),6000)},450)}
@@ -88,20 +79,28 @@ function step3(){document.getElementById('content').innerHTML=`<h1>Will you be m
 
 function yes(){
 burstHearts();
-const bg=document.getElementById('bgm');
-bg.volume=0;
-bg.play();
 
-/* STOP MUSIC AFTER 30 SECONDS */
+const bg=document.getElementById('bgm');
+
+/* reset audio first */
+bg.pause();
+bg.currentTime = 0;
+bg.volume = 0.4;
+
+/* play after user click (important for browsers) */
+bg.play().catch(()=>{});
+
+/* AUTO STOP AFTER 30s */
 setTimeout(()=>{
   let fade = setInterval(()=>{
-    if(bg.volume > 0.05){
-      bg.volume -= 0.05;   // fade
+    if(bg.volume > 0.02){
+      bg.volume -= 0.02;
     }else{
       clearInterval(fade);
-      killMusic();         // FULL STOP
+      bg.pause();
+      bg.currentTime = 0;
     }
-  },150);
+  },120);
 },30000);
 
 
